@@ -1,7 +1,12 @@
 import React from "react";
+import Statistics from "../Components/Statistics";
 
 function Home() {
-  return <></>;
+  return (
+    <>
+      <Statistics />
+    </>
+  );
 }
 
 export default Home;
