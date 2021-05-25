@@ -5,7 +5,7 @@ export const PrimaryButton = styled.button`
   color: white;
   border-radius: 10px;
   border: 2px solid #22a1fe;
-  padding: 1em 2.5em;
+  padding: 1em 2em;
   text-align: center;
   white-space: nowrap;
   text-transform: capitalize;
@@ -33,4 +33,11 @@ export const PlusButton = styled.div`
     background-color: #22a1fe;
     color: white;
   }
+`;
+
+export const ButtonsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 2em;
 `;

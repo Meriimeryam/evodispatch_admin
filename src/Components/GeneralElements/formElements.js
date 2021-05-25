@@ -13,7 +13,11 @@ export const FormContainer = styled.form`
   align-items: center;
 `;
 
-export const FormWrapper = styled.div``;
+export const FormWrapper = styled.div`
+  width: 50%;
+  max-width: 400px;
+  padding: 1em;
+`;
 
 export const FormInputWrapper = styled.div`
   margin: 0 auto 1.5em;

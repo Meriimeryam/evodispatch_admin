@@ -1,5 +1,9 @@
 import React from "react";
 import {
+  ButtonsWrapper,
+  PrimaryButton,
+} from "../Components/GeneralElements/buttonElements";
+import {
   FormContainer,
   FormGrouper,
   FormInput,
@@ -63,6 +67,9 @@ function SolutionsController() {
           <FormInput id="test" name="test" type="text" />
         </FormInputWrapper>
       </FormWrapper>
+      <ButtonsWrapper>
+        <PrimaryButton>Save</PrimaryButton>
+      </ButtonsWrapper>
     </FormContainer>
   );
 }
