@@ -1,24 +1,19 @@
 import styled from "styled-components";
 
 export const FormContainer = styled.form`
+  width: 80%;
+  max-width: 1200px;
+  background-color: #fff;
+  margin: 2em auto;
+  border-radius: 10px;
+  padding: 4em 2em;
+  box-shadow: 0 0 3px #599bd3;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  border: 2px solid #060b26;
-`;
-export const FormWrapper = styled.div`
-  display: flex;
-  align-items: stretch;
-  flex-direction: column;
-  @media screen and (max-width: 768px) {
-    font-size: 1rem;
-    flex-direction: row;
-  }
 `;
 
-export const FormGrouper = styled.div`
-  padding: 0 0.5em;
-`;
+export const FormWrapper = styled.div``;
 
 export const FormInputWrapper = styled.div`
   margin: 0 auto 1.5em;
