@@ -8,12 +8,22 @@ export const FormContainer = styled.form`
   border-radius: 10px;
   padding: 4em 2em;
   box-shadow: 0 0 3px #599bd3;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+`;
+
+export const FormTitle = styled.div`
+  font-size: 2rem;
+  text-transform: uppercase;
+  margin-left: 0.5em;
+  margin-bottom: 1em;
 `;
 
 export const FormWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+
+export const FormGroup = styled.div`
   width: 50%;
   max-width: 400px;
   padding: 1em;
@@ -23,12 +33,25 @@ export const FormInputWrapper = styled.div`
   margin: 0 auto 1.5em;
 `;
 
+export const FormInputGroup = styled.div`
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 1em;
+`;
+
+export const FormInputGroupTitle = styled.h4`
+  font-size: 1.225rem;
+  color: #599bd3;
+  margin-bottom: 1em;
+`;
+
 export const FormLabel = styled.label`
   display: block;
   font-size: 1.125rem;
   font-weight: 500;
   margin-bottom: 0.7em;
   color: #31383e;
+  text-transform: capitalize;
 
   @media screen and (max-width: 768px) {
     font-size: 1rem;
@@ -48,6 +71,14 @@ export const FormErrorMessage = styled.div`
   @media screen and (max-width: 450px) {
     font-size: 0.7rem;
   }
+`;
+
+export const FormImagePreviewContainer = styled.div`
+  width: 50%;
+`;
+
+export const FormImagePreview = styled.img`
+  width: 100%;
 `;
 
 export const FormInput = styled.input`

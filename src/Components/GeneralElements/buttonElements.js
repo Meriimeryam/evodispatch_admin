@@ -9,6 +9,7 @@ export const PrimaryButton = styled.button`
   text-align: center;
   white-space: nowrap;
   text-transform: capitalize;
+  margin-left: ${({ marginL }) => marginL};
 `;
 
 export const OutlineButton = styled.button`
