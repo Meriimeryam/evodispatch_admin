@@ -17,7 +17,7 @@ import {
   FormWrapper,
 } from "../Components/GeneralElements/formElements";
 
-const FILE_SIZE = 160 * 1024;
+const FILE_SIZE = 1024 * 12;
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
 
 const SolutionDataSchema = Yup.object().shape({
@@ -32,18 +32,13 @@ const SolutionDataSchema = Yup.object().shape({
     )
     .required(),
   price: Yup.number().required(),
-  image: Yup.mixed()
-    .required()
-    .test(
-      "fileFormat",
-      "Unsupported Format",
-      (value) => value && SUPPORTED_FORMATS.includes(value.type)
-    )
-    .test(
-      "fileSize",
-      "File too large",
-      (value) => value && value.size <= FILE_SIZE
-    ),
+  image: Yup.mixed().required(),
+  // .test(
+  //   "fileFormat",
+  //   "Unsupported Format",
+  //   (value) => value && SUPPORTED_FORMATS.includes(value.type)
+  // )
+  // .test("fileSize", "File too large", (value) => value.size <= FILE_SIZE),
 });
 
 function Solution() {
@@ -59,15 +54,17 @@ function Solution() {
     },
     validationSchema: SolutionDataSchema,
     onSubmit: (values) => {
-      Axios.post("http://localhost:5000/solution", {
-        values,
-      })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // Axios.post("http://localhost:5000/solution", {
+      //   values,
+      // })
+      //   .then((response) => {
+      //     console.log(response);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+      // alert(JSON.stringify(values, null, 2));
+      console.log(values);
     },
   });
   return (
@@ -159,7 +156,9 @@ function Solution() {
           </FormInputWrapper>
         </FormGroup>
       </FormWrapper>
-      <PrimaryButton marginL="1em">Save</PrimaryButton>
+      <PrimaryButton marginL="1em" type="submit">
+        Save
+      </PrimaryButton>
     </FormContainer>
   );
 }

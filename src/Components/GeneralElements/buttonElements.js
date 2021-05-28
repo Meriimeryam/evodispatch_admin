@@ -10,6 +10,13 @@ export const PrimaryButton = styled.button`
   white-space: nowrap;
   text-transform: capitalize;
   margin-left: ${({ marginL }) => marginL};
+
+  &:hover {
+    cursor: pointer;
+    border: 2px solid #22a1fe;
+    background-color: #fff;
+    color: #22a1fe;
+  }
 `;
 
 export const OutlineButton = styled.button`
