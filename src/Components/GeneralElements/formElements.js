@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const FormContainer = styled.form`
   width: 80%;
@@ -135,4 +136,7 @@ export const FormTextarea = styled.textarea`
   @media screen and (max-width: 450px) {
     font-size: 0.7rem;
   }
+`;
+export const LinkedTo = styled(Link)`
+  width: fit-content;
 `;
