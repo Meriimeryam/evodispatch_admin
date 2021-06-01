@@ -40,7 +40,7 @@ function SolutionsController() {
           <TableRow>
             <TableHeader>Label</TableHeader>
             <TableHeader>Image</TableHeader>
-            <TableHeader>Action</TableHeader>
+            <TableHeader>Actions</TableHeader>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -55,7 +55,11 @@ function SolutionsController() {
                     <TableImg src={solution.image} />
                   </TableData>
                   <TableData>
-                    <TableLink to="/add-solution">
+                    <TableLink
+                      to={
+                        "/add-solutions?action=edit&id=" + solution.id_solution
+                      }
+                    >
                       <AiIcons.AiFillEdit />
                     </TableLink>
                     <AiIcons.AiFillDelete />
@@ -67,7 +71,7 @@ function SolutionsController() {
         </TableBody>
       </TableContainer>
 
-      <TableLink to="/add-solutions">
+      <TableLink to="/add-solutions?action=add">
         <PrimaryButton>add solution</PrimaryButton>
       </TableLink>
     </GlobalContainer>

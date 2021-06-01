@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -57,7 +57,7 @@ const schema = Yup.object().shape({
 
  */
 
-function Solution() {
+function Solution({ location }) {
   //Use react HOOK FORM
   const {
     register,
@@ -67,36 +67,85 @@ function Solution() {
     resolver: yupResolver(schema),
   });
 
+  const [solution, setSolution] = useState({});
+  const [solutionId, setSolutionId] = useState(0);
+  const [action, setAction] = useState("add");
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const action = params.get("action");
+    setSolutionId(params.get("id"));
+    setAction(action);
+    if (action === "edit") {
+      Axios.get("http://localhost:5000/solution", {
+        params: {
+          id: solutionId,
+        },
+      })
+        .then((response) => {
+          setSolution({ libel: 546545 });
+          // setErrorOccured(false);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
+
   //History Used To Redirect
   const history = useHistory();
   console.log(errors);
   const onSubmit = (data) => {
     console.log(data);
-    // const formData = new FormData();
-    // formData.append("data", JSON.stringify(data));
-    // formData.append("image", data.image[0]);
-    // //send data to server
-    // Axios.post("/solution", formData, {
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    // })
-    //   .then((response) => {
-    //     //redirect to Solutions controller
-    //     history.push("/solutions");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(data));
+    formData.append("image", data.image[0]);
+    if (solution !== []) {
+      //Update data
+      formData.append("id", solution[0].id_solution);
+      console.log(solution);
+      Axios.put("/solution", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+        .then((response) => {
+          //redirect to Solutions controller
+          history.push("/solutions");
+          // console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      //send data to server
+      Axios.post("/solution", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+        .then((response) => {
+          //redirect to Solutions controller
+          history.push("/solutions");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
+
   return (
     <FormContainer onSubmit={handleSubmit(onSubmit)}>
-      <FormTitle>Add solution</FormTitle>
+      <FormTitle>Update Solution</FormTitle>
       <FormWrapper>
         <FormGroup>
           <FormInputWrapper>
             <FormLabel htmlFor="label">Label</FormLabel>
-            <FormInput {...register("label")} id="label" type="text" />
+            <FormInput
+              defaultValue={solution.libel}
+              {...register("label")}
+              id="label"
+              type="text"
+              placeholder="Solution Label"
+            />
             {errors.label && (
               <FormErrorMessage>{errors.label.message}</FormErrorMessage>
             )}
@@ -105,21 +154,36 @@ function Solution() {
             <FormInputGroupTitle>Brief</FormInputGroupTitle>
             <FormInputWrapper>
               <FormLabel htmlFor="feature1">First feature</FormLabel>
-              <FormInput {...register("feature1")} id="feature1" type="text" />
+              <FormInput
+                {...register("feature1")}
+                id="feature1"
+                type="text"
+                // defaultValue={JSON.parse(solution.brief)[0]}
+              />
               {errors.feature1 && (
                 <FormErrorMessage>{errors.feature1.message}</FormErrorMessage>
               )}
             </FormInputWrapper>
             <FormInputWrapper>
               <FormLabel htmlFor="feature2">Second feature</FormLabel>
-              <FormInput {...register("feature2")} id="feature2" type="text" />
+              <FormInput
+                {...register("feature2")}
+                id="feature2"
+                type="text"
+                // defaultValue={JSON.parse(solution.brief)[1]}
+              />
               {errors.feature2 && (
                 <FormErrorMessage>{errors.feature2.message}</FormErrorMessage>
               )}
             </FormInputWrapper>
             <FormInputWrapper>
               <FormLabel htmlFor="feature3">Third feature</FormLabel>
-              <FormInput {...register("feature3")} id="feature3" type="text" />
+              <FormInput
+                {...register("feature3")}
+                id="feature3"
+                type="text"
+                // defaultValue={JSON.parse(solution.brief)[2]}
+              />
               {errors.feature3 && (
                 <FormErrorMessage>{errors.feature3.message}</FormErrorMessage>
               )}
@@ -133,6 +197,7 @@ function Solution() {
               {...register("description")}
               id="description"
               placeholder="Solution description"
+              defaultValue={solution.description}
             ></FormTextarea>
             {errors.description && (
               <FormErrorMessage>{errors.description.message}</FormErrorMessage>
@@ -140,7 +205,12 @@ function Solution() {
           </FormInputWrapper>
           <FormInputWrapper>
             <FormLabel htmlFor="price">price</FormLabel>
-            <FormInput {...register("price")} id="price" type="number" />
+            <FormInput
+              {...register("price")}
+              id="price"
+              type="number"
+              defaultValue={solution.price}
+            />
             {errors.price && (
               <FormErrorMessage>{errors.price.message}</FormErrorMessage>
             )}

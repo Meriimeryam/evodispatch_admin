@@ -48,4 +48,6 @@ export const TableImg = styled.img`
 
 export const TableLink = styled(Link)`
   width: fit-content;
+  text-decoration: none;
+  color: black;
 `;
