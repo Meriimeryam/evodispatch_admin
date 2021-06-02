@@ -17,6 +17,8 @@ import {
   FormTextarea,
   FormTitle,
   FormWrapper,
+  ImagePreview,
+  ImagePreviewContainer,
 } from "../Components/GeneralElements/formElements";
 
 //IMAGE Supported format:
@@ -37,7 +39,7 @@ const schema = Yup.object().shape({
     ),
   price: Yup.number().required("Required").positive("Must be positive "),
   image: Yup.mixed()
-    .required("You need to provide a file")
+    .required("required")
     .test("fileSize", "The file is too large", (value) => {
       return value && value[0].size <= 2000000;
     })
@@ -62,28 +64,65 @@ function Solution({ location }) {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const [solution, setSolution] = useState({});
+  const [solution, setSolution] = useState({ brief: [] });
   const [solutionId, setSolutionId] = useState(0);
   const [action, setAction] = useState("add");
+  const [displayImg, setDisplayImg] = useState("none");
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState("");
+
+  const imputFileHandler = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.substr(0, 5) === "image") {
+      setImage(file);
+    }
+
+    setValue("image", file);
+  };
+
+  useEffect(() => {
+    register("image");
+  }, [register]);
+
+  useEffect(() => {
+    if (image) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(image);
+      setDisplayImg("block");
+    } else {
+      setPreview(null);
+    }
+  }, [image]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const action = params.get("action");
+
+    const id = params.get("id");
     setSolutionId(params.get("id"));
+
+    const action = params.get("action");
     setAction(action);
+
     if (action === "edit") {
       Axios.get("http://localhost:5000/solution", {
         params: {
-          id: solutionId,
+          id: id,
         },
       })
         .then((response) => {
-          setSolution({ libel: 546545 });
+          console.log(response.data);
+          response.data.brief = JSON.parse(response.data.brief);
+          setSolution(response.data);
+          console.log(solution);
           // setErrorOccured(false);
         })
         .catch((err) => console.log(err));
@@ -92,16 +131,18 @@ function Solution({ location }) {
 
   //History Used To Redirect
   const history = useHistory();
+
   console.log(errors);
   const onSubmit = (data) => {
     console.log(data);
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     formData.append("image", data.image[0]);
-    if (solution !== []) {
-      //Update data
-      formData.append("id", solution[0].id_solution);
+    if (action === "edit") {
+      formData.append("id", solution.id_solution);
       console.log(solution);
+
+      //UPDATE data
       Axios.put("/solution", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -116,7 +157,7 @@ function Solution({ location }) {
           console.log(error);
         });
     } else {
-      //send data to server
+      //INSERT data
       Axios.post("/solution", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -134,13 +175,15 @@ function Solution({ location }) {
 
   return (
     <FormContainer onSubmit={handleSubmit(onSubmit)}>
-      <FormTitle>Update Solution</FormTitle>
+      <FormTitle>
+        {action === "edit" ? "Update Solution" : "Add Solution"}
+      </FormTitle>
       <FormWrapper>
         <FormGroup>
           <FormInputWrapper>
             <FormLabel htmlFor="label">Label</FormLabel>
             <FormInput
-              defaultValue={solution.libel}
+              defaultValue={action === "edit" ? solution.libel : ""}
               {...register("label")}
               id="label"
               type="text"
@@ -158,7 +201,7 @@ function Solution({ location }) {
                 {...register("feature1")}
                 id="feature1"
                 type="text"
-                // defaultValue={JSON.parse(solution.brief)[0]}
+                defaultValue={solution.brief[0]}
               />
               {errors.feature1 && (
                 <FormErrorMessage>{errors.feature1.message}</FormErrorMessage>
@@ -170,7 +213,7 @@ function Solution({ location }) {
                 {...register("feature2")}
                 id="feature2"
                 type="text"
-                // defaultValue={JSON.parse(solution.brief)[1]}
+                defaultValue={solution.brief[1]}
               />
               {errors.feature2 && (
                 <FormErrorMessage>{errors.feature2.message}</FormErrorMessage>
@@ -182,7 +225,7 @@ function Solution({ location }) {
                 {...register("feature3")}
                 id="feature3"
                 type="text"
-                // defaultValue={JSON.parse(solution.brief)[2]}
+                defaultValue={solution.brief[2]}
               />
               {errors.feature3 && (
                 <FormErrorMessage>{errors.feature3.message}</FormErrorMessage>
@@ -218,10 +261,24 @@ function Solution({ location }) {
 
           <FormInputWrapper>
             <FormLabel htmlFor="image">image</FormLabel>
-            <FormInput {...register("image")} id="image" type="file" />
+            <FormInput
+              onChange={imputFileHandler}
+              id="image"
+              type="file"
+              accept="image/*"
+            />
             {errors.image && (
               <FormErrorMessage>{errors.image.message}</FormErrorMessage>
             )}
+
+            <ImagePreviewContainer
+              style={{ display: action === "edit" ? "block" : displayImg }}
+            >
+              <ImagePreview
+                src={preview ? preview : solution.image}
+                alt="uploaded-image-preview"
+              />
+            </ImagePreviewContainer>
           </FormInputWrapper>
         </FormGroup>
       </FormWrapper>

@@ -48,4 +48,5 @@ export const ButtonsWrapper = styled.div`
   align-items: center;
   justify-content: space-around;
   margin: 2em;
+  margin-bottom: 0;
 `;

@@ -78,10 +78,6 @@ export const FormImagePreviewContainer = styled.div`
   width: 50%;
 `;
 
-export const FormImagePreview = styled.img`
-  width: 100%;
-`;
-
 export const FormInput = styled.input`
   font-size: 1rem;
   padding: 9px 16px;
@@ -139,4 +135,23 @@ export const FormTextarea = styled.textarea`
 `;
 export const LinkedTo = styled(Link)`
   width: fit-content;
+`;
+
+export const ImagePreviewContainer = styled.div`
+  width: 50%;
+  margin-top: 0.7em;
+  display: none;
+`;
+
+export const ImagePreview = styled.img`
+  width: 100%;
+`;
+
+export const Paragraphe = styled.p`
+  margin: 0.5em auto 1em;
+  padding: 2em 0;
+  text-align: center;
+  width: 100%;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 `;
