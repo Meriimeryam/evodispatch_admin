@@ -21,13 +21,13 @@ export const TableBody = styled.tbody``;
 
 export const TableHeader = styled.th`
   border: 1px solid #dddddd;
-  text-align: left;
+  text-align: center;
   padding: 8px;
 `;
 
 export const TableData = styled.td`
   border: 1px solid #dddddd;
-  text-align: left;
+  text-align: center;
   padding: 8px;
 `;
 
@@ -51,3 +51,12 @@ export const TableLink = styled(Link)`
   text-decoration: none;
   color: black;
 `;
+
+export const customStyles = {
+  content: {
+    width: "fit-content",
+    padding: "2em",
+    height: "fit-content",
+    margin: "auto",
+  },
+};

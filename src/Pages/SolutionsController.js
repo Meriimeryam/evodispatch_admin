@@ -18,19 +18,10 @@ import {
   TableError,
   TableImg,
   TableLink,
+  customStyles,
 } from "../Components/GeneralElements/TableElements";
 import * as AiIcons from "react-icons/ai";
 import { Paragraphe } from "../Components/GeneralElements/formElements";
-import { useFormState } from "react-hook-form";
-
-const customStyles = {
-  content: {
-    width: "fit-content",
-    padding: "2em",
-    height: "fit-content",
-    margin: "auto",
-  },
-};
 
 Modal.setAppElement("#root");
 
@@ -116,9 +107,11 @@ function SolutionsController() {
                         "/add-solutions?action=edit&id=" + solution.id_solution
                       }
                     >
-                      <AiIcons.AiFillEdit />
+                      <AiIcons.AiFillEdit fontSize="2em" />
                     </TableLink>
                     <AiIcons.AiFillDelete
+                      cursor="pointer"
+                      fontSize="2em"
                       onClick={() => {
                         setModalIsOpen(true);
                         setDeletedSolution(solution);

@@ -14,7 +14,7 @@ export const PrimaryButton = styled.button`
   &:hover {
     cursor: pointer;
     border: 2px solid #22a1fe;
-    background-color: #fff;
+    background-color: transparent;
     color: #22a1fe;
   }
 `;
@@ -28,18 +28,11 @@ export const OutlineButton = styled.button`
   text-align: center;
   white-space: nowrap;
   text-transform: capitalize;
-`;
-
-export const PlusButton = styled.div`
-  background-color: transparent;
-  border-radius: 3px;
-  border: 2px solid #22a1fe;
-  color: #22a1fe;
-  padding: 0.5em 1em;
-  width: fit-content;
   &:hover {
+    cursor: pointer;
+    border: 2px solid #22a1fe;
     background-color: #22a1fe;
-    color: white;
+    color: #fff;
   }
 `;
 
