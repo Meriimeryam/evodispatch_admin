@@ -3,7 +3,11 @@ import { useHistory } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Axios from "axios";
-import { PrimaryButton } from "../Components/GeneralElements/buttonElements";
+import Modal from "react-modal";
+import {
+  ButtonsWrapper,
+  PrimaryButton,
+} from "../Components/GeneralElements/buttonElements";
 import {
   FormContainer,
   FormErrorMessage,
@@ -18,7 +22,9 @@ import {
   FormWrapper,
   ImagePreview,
   ImagePreviewContainer,
+  Paragraphe,
 } from "../Components/GeneralElements/formElements";
+import { customStyles } from "../Components/GeneralElements/TableElements";
 
 //IMAGE Supported format:
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
@@ -106,11 +112,12 @@ function Solution({ location }) {
     description: "",
     price: 0,
   });
-  const [solutionId, setSolutionId] = useState(0);
+  // const [solutionId, setSolutionId] = useState(0);
   const [action, setAction] = useState("add");
   const [displayImg, setDisplayImg] = useState("none");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const history = useHistory();
   const formik = useFormik({
@@ -146,10 +153,10 @@ function Solution({ location }) {
         })
           .then((response) => {
             //redirect to Solutions controller
-            history.push("/solutions");
-            console.log(response);
+            // history.push("/solutions");
           })
           .catch((error) => {
+            setModalIsOpen(true);
             console.log(error);
           });
       } else {
@@ -162,10 +169,13 @@ function Solution({ location }) {
         })
           .then((response) => {
             //redirect to Solutions controller
+            //i didn't have to add if i just hade to open the modal in catch
             history.push("/solutions");
+
             // console.log(response);
           })
           .catch((error) => {
+            setModalIsOpen(true);
             console.log(error);
           });
       }
@@ -201,7 +211,7 @@ function Solution({ location }) {
     const params = new URLSearchParams(location.search);
 
     const id = params.get("id");
-    setSolutionId(params.get("id"));
+    // setSolutionId(params.get("id"));
 
     const action = params.get("action");
     setAction(action);
@@ -229,125 +239,145 @@ function Solution({ location }) {
   // console.log(formik.errors);
 
   return (
-    <FormContainer onSubmit={formik.handleSubmit}>
-      <FormTitle>
-        {action === "edit" ? "Update Solution" : "Add Solution"}
-      </FormTitle>
-      <FormWrapper>
-        <FormGroup>
-          <FormInputWrapper>
-            <FormLabel htmlFor="label">Label</FormLabel>
-            <FormInput
-              name="label"
-              id="label"
-              type="text"
-              placeholder="Solution Label"
-              onChange={formik.handleChange}
-              value={formik.values.label}
-            />
-            {formik.errors.label && (
-              <FormErrorMessage>{formik.errors.label}</FormErrorMessage>
-            )}
-          </FormInputWrapper>
-          <FormInputGroup>
-            <FormInputGroupTitle>Brief</FormInputGroupTitle>
-            <FormInputWrapper>
-              <FormLabel htmlFor="feature1">First feature</FormLabel>
-              <FormInput
-                name="feature1"
-                id="feature1"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.feature1}
-              />
-              {formik.errors.feature1 && (
-                <FormErrorMessage>{formik.errors.feature1}</FormErrorMessage>
-              )}
-            </FormInputWrapper>
-            <FormInputWrapper>
-              <FormLabel htmlFor="feature2">Second feature</FormLabel>
-              <FormInput
-                name="feature2"
-                id="feature2"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.feature2}
-              />
-              {formik.errors.feature2 && (
-                <FormErrorMessage>{formik.errors.feature2}</FormErrorMessage>
-              )}
-            </FormInputWrapper>
-            <FormInputWrapper>
-              <FormLabel htmlFor="feature3">Third feature</FormLabel>
-              <FormInput
-                name="feature3"
-                id="feature3"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.feature3}
-              />
-              {formik.errors.feature3 && (
-                <FormErrorMessage>{formik.errors.feature3}</FormErrorMessage>
-              )}
-            </FormInputWrapper>
-          </FormInputGroup>
-        </FormGroup>
-        <FormGroup>
-          <FormInputWrapper>
-            <FormLabel htmlFor="description">description</FormLabel>
-            <FormTextarea
-              name="description"
-              id="description"
-              placeholder="Solution description"
-              onChange={formik.handleChange}
-              value={formik.values.description}
-            />
-            {formik.errors.description && (
-              <FormErrorMessage>{formik.errors.description}</FormErrorMessage>
-            )}
-          </FormInputWrapper>
-          <FormInputWrapper>
-            <FormLabel htmlFor="price">price</FormLabel>
-            <FormInput
-              name="price"
-              id="price"
-              type="number"
-              onChange={formik.handleChange}
-              value={formik.values.price}
-            />
-            {formik.errors.price && (
-              <FormErrorMessage>{formik.errors.price}</FormErrorMessage>
-            )}
-          </FormInputWrapper>
+    <>
+      <Modal isOpen={modalIsOpen} style={customStyles}>
+        <h2>Error !</h2>
 
-          <FormInputWrapper>
-            <FormLabel htmlFor="image">image</FormLabel>
-            <FormInput
-              onChange={imputFileHandler}
-              name="image"
-              id="image"
-              type="file"
-              accept="image/*"
-            />
-            {formik.errors.image && (
-              <FormErrorMessage>{formik.errors.image}</FormErrorMessage>
-            )}
+        <Paragraphe>
+          There Have Been An Error! Please Try Again Later !
+        </Paragraphe>
+        <ButtonsWrapper>
+          <PrimaryButton
+            onClick={() => {
+              setModalIsOpen(false);
+              history.push("/solutions");
+            }}
+          >
+            back to Solutions
+          </PrimaryButton>
+        </ButtonsWrapper>
+      </Modal>
 
-            <ImagePreviewContainer
-              style={{ display: action === "edit" ? "block" : displayImg }}
-            >
-              <ImagePreview
-                src={preview ? preview : solution.image}
-                alt="uploaded-image-preview"
+      <FormContainer onSubmit={formik.handleSubmit}>
+        <FormTitle>
+          {action === "edit" ? "Update Solution" : "Add Solution"}
+        </FormTitle>
+        <FormWrapper>
+          <FormGroup>
+            <FormInputWrapper>
+              <FormLabel htmlFor="label">Label</FormLabel>
+              <FormInput
+                name="label"
+                id="label"
+                type="text"
+                placeholder="Solution Label"
+                onChange={formik.handleChange}
+                value={formik.values.label}
               />
-            </ImagePreviewContainer>
-          </FormInputWrapper>
-        </FormGroup>
-      </FormWrapper>
-      <PrimaryButton marginL="1em" type="submit">
-        Save
-      </PrimaryButton>
-    </FormContainer>
+              {formik.errors.label && (
+                <FormErrorMessage>{formik.errors.label}</FormErrorMessage>
+              )}
+            </FormInputWrapper>
+            <FormInputGroup>
+              <FormInputGroupTitle>Brief</FormInputGroupTitle>
+              <FormInputWrapper>
+                <FormLabel htmlFor="feature1">First feature</FormLabel>
+                <FormInput
+                  name="feature1"
+                  id="feature1"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.feature1}
+                />
+                {formik.errors.feature1 && (
+                  <FormErrorMessage>{formik.errors.feature1}</FormErrorMessage>
+                )}
+              </FormInputWrapper>
+              <FormInputWrapper>
+                <FormLabel htmlFor="feature2">Second feature</FormLabel>
+                <FormInput
+                  name="feature2"
+                  id="feature2"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.feature2}
+                />
+                {formik.errors.feature2 && (
+                  <FormErrorMessage>{formik.errors.feature2}</FormErrorMessage>
+                )}
+              </FormInputWrapper>
+              <FormInputWrapper>
+                <FormLabel htmlFor="feature3">Third feature</FormLabel>
+                <FormInput
+                  name="feature3"
+                  id="feature3"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.feature3}
+                />
+                {formik.errors.feature3 && (
+                  <FormErrorMessage>{formik.errors.feature3}</FormErrorMessage>
+                )}
+              </FormInputWrapper>
+            </FormInputGroup>
+          </FormGroup>
+          <FormGroup>
+            <FormInputWrapper>
+              <FormLabel htmlFor="description">description</FormLabel>
+              <FormTextarea
+                name="description"
+                id="description"
+                placeholder="Solution description"
+                onChange={formik.handleChange}
+                value={formik.values.description}
+              />
+              {formik.errors.description && (
+                <FormErrorMessage>{formik.errors.description}</FormErrorMessage>
+              )}
+            </FormInputWrapper>
+            <FormInputWrapper>
+              <FormLabel htmlFor="price">price</FormLabel>
+              <FormInput
+                name="price"
+                id="price"
+                type="number"
+                onChange={formik.handleChange}
+                value={formik.values.price}
+              />
+              {formik.errors.price && (
+                <FormErrorMessage>{formik.errors.price}</FormErrorMessage>
+              )}
+            </FormInputWrapper>
+
+            <FormInputWrapper>
+              <FormLabel htmlFor="image">image</FormLabel>
+              <FormInput
+                onChange={imputFileHandler}
+                name="image"
+                id="image"
+                type="file"
+                accept="image/*"
+              />
+              {formik.errors.image && (
+                <FormErrorMessage>{formik.errors.image}</FormErrorMessage>
+              )}
+
+              <ImagePreviewContainer
+                style={{ display: action === "edit" ? "block" : displayImg }}
+              >
+                <ImagePreview
+                  src={preview ? preview : solution.image}
+                  alt="uploaded-image-preview"
+                />
+              </ImagePreviewContainer>
+            </FormInputWrapper>
+          </FormGroup>
+        </FormWrapper>
+        <PrimaryButton marginL="1em" type="submit">
+          Save
+        </PrimaryButton>
+      </FormContainer>
+    </>
   );
 }
 

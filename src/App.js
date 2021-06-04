@@ -6,6 +6,7 @@ import Requests from "./Pages/Requests";
 import RequestController from "./Pages/RequestController";
 import Solution from "./Pages/Solution";
 import SolutionsController from "./Pages/SolutionsController";
+import Links from "./Pages/Links";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/add-solutions" component={Solution} />
         <Route path="/request" component={RequestController} />
         <Route path="/view-request" component={Requests} />
+        <Route path="/links" component={Links} />
       </Switch>
     </Router>
   );

@@ -22,12 +22,14 @@ export const FormWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin: 0 auto 1.5em;
 `;
 
 export const FormGroup = styled.div`
   width: 50%;
   max-width: 400px;
   padding: 1em;
+  margin: 0 auto 1.5em;
 `;
 
 export const FormInputWrapper = styled.div`

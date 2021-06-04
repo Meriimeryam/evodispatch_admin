@@ -22,4 +22,16 @@ export const SidebarData = [
     icon: <AiIcons.AiFillStar />,
     cName: "nav-text",
   },
+  {
+    title: "Links",
+    path: "/links",
+    icon: <FaIcons.FaLink />,
+    cName: "nav-text",
+  },
+  {
+    title: "Clients",
+    path: "/clients",
+    icon: <FaIcons.FaUserFriends />,
+    cName: "nav-text",
+  },
 ];
