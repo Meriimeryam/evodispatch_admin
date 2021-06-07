@@ -32,7 +32,7 @@ function SolutionsController() {
   const [deletedSolution, setDeletedSolution] = useState({});
 
   useEffect(() => {
-    Axios.get("http://localhost:5000/solution")
+    Axios.get("/solution")
       .then((response) => {
         setSolutionsList(response.data);
         setErrorOccured(false);
@@ -43,7 +43,7 @@ function SolutionsController() {
   const deleteItem = () => {
     const solutions = Object.assign([], solutionsList);
     solutions.splice(solutions.indexOf(deletedSolution), 1);
-    Axios.delete("http://localhost:5000/solution", {
+    Axios.delete("/solution", {
       data: {
         source: deletedSolution.id_solution,
       },

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
-import Modal from "react-modal";
 import {
+  customStyles,
   GlobalContainer,
   TableBody,
   TableContainer,
@@ -9,48 +8,48 @@ import {
   TableError,
   TableHead,
   TableHeader,
+  TableImg,
   TableLink,
   TableRow,
-  customStyles,
 } from "../Components/GeneralElements/TableElements";
-import * as AiIcons from "react-icons/ai";
+import Modal from "react-modal";
 import { Paragraphe } from "../Components/GeneralElements/formElements";
 import {
   ButtonsWrapper,
   PrimaryButton,
 } from "../Components/GeneralElements/buttonElements";
-import { IconContext } from "react-icons";
+import * as AiIcons from "react-icons/ai";
+import Axios from "axios";
 
 Modal.setAppElement("#root");
 
-function RequestController() {
-  const [requests, setRequests] = useState([]);
-  const [errorOccured, setErrorOccured] = useState(true);
+function LogosController() {
+  const [clientList, setClientList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [deletedRequest, setDeletedRequest] = useState({});
+  const [errorOccured, setErrorOccured] = useState(true);
+  const [deletedClient, setDeletedClient] = useState({});
 
   useEffect(() => {
-    Axios.get("/request")
+    Axios.get("/client")
       .then((response) => {
         console.log("test");
-        setRequests(response.data);
+        setClientList(response.data);
         setErrorOccured(false);
       })
       .catch((err) => console.log(err));
   }, []);
 
   const deleteItem = () => {
-    const requestsList = Object.assign([], requests);
-    requestsList.splice(requestsList.indexOf(deletedRequest), 1);
-    console.log(deletedRequest.id_request);
-    Axios.delete("/request", {
+    const logos = Object.assign([], clientList);
+    logos.splice(logos.indexOf(deletedClient), 1);
+    Axios.delete("/client", {
       data: {
-        source: deletedRequest.id_request,
+        source: deletedClient.id_client,
       },
     })
       .then((res) => {
         console.log(res);
-        setRequests(requestsList);
+        setClientList(logos);
       })
       .catch((err) => {
         console.log(err);
@@ -86,10 +85,8 @@ function RequestController() {
         <TableHead>
           <TableRow>
             <TableHeader>#</TableHeader>
-            <TableHeader>Name</TableHeader>
             <TableHeader>Company Name</TableHeader>
-            <TableHeader>Fleet Size</TableHeader>
-            <TableHeader>Date</TableHeader>
+            <TableHeader>Image</TableHeader>
             <TableHeader>Actions</TableHeader>
           </TableRow>
         </TableHead>
@@ -97,27 +94,28 @@ function RequestController() {
           {errorOccured ? (
             <TableError>Error</TableError>
           ) : (
-            requests.map((r, key) => {
+            clientList.map((client, key) => {
               return (
                 <TableRow key={key}>
                   <TableData>{key}</TableData>
-                  <TableData>{r.firstname + " " + r.lastname}</TableData>
-                  <TableData>{r.company}</TableData>
-                  <TableData>{r.fleet_size}</TableData>
-                  <TableData>{r.date}</TableData>
+                  <TableData>{client.company}</TableData>
                   <TableData>
-                    <IconContext.Provider value={{ size: "2em" }}>
-                      <TableLink to={"/view-request?id=" + r.id_request}>
-                        <AiIcons.AiFillEye />
-                      </TableLink>
-                      <AiIcons.AiFillDelete
-                        cursor="pointer"
-                        onClick={() => {
-                          setModalIsOpen(true);
-                          setDeletedRequest(r);
-                        }}
-                      />
-                    </IconContext.Provider>
+                    <TableImg src={client.logo} />
+                  </TableData>
+                  <TableData>
+                    <TableLink
+                      to={"/add-client?action=edit&id=" + client.id_client}
+                    >
+                      <AiIcons.AiFillEdit fontSize="2em" />
+                    </TableLink>
+                    <AiIcons.AiFillDelete
+                      cursor="pointer"
+                      fontSize="2em"
+                      onClick={() => {
+                        setModalIsOpen(true);
+                        setDeletedClient(client);
+                      }}
+                    />
                   </TableData>
                 </TableRow>
               );
@@ -125,8 +123,11 @@ function RequestController() {
           )}
         </TableBody>
       </TableContainer>
+      <TableLink to="/add-client?action=add">
+        <PrimaryButton>add client</PrimaryButton>
+      </TableLink>
     </GlobalContainer>
   );
 }
 
-export default RequestController;
+export default LogosController;

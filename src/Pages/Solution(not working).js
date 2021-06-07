@@ -113,7 +113,7 @@ function Solution({ location }) {
     setAction(action);
 
     if (action === "edit") {
-      Axios.get("http://localhost:5000/solution", {
+      Axios.get("/solution", {
         params: {
           id: id,
         },

@@ -44,7 +44,7 @@ const schema = Yup.object().shape({
     ),
   price: Yup.number().required("Required").positive("Must be positive "),
   image: Yup.mixed()
-    .required("Required from add")
+    .required("Required")
     .test("fileSize", "The file is too large", (value) => {
       return value && value.size <= 2000000;
     })
@@ -182,7 +182,7 @@ function Solution({ location }) {
     },
   });
 
-  const imputFileHandler = (e) => {
+  const inputFileHandler = (e) => {
     formik.setFieldValue(
       "image",
       e.target.files[0],
@@ -217,7 +217,7 @@ function Solution({ location }) {
     setAction(action);
 
     if (action === "edit") {
-      Axios.get("http://localhost:5000/solution", {
+      Axios.get("/solution", {
         params: {
           id: id,
         },
@@ -352,7 +352,7 @@ function Solution({ location }) {
             <FormInputWrapper>
               <FormLabel htmlFor="image">image</FormLabel>
               <FormInput
-                onChange={imputFileHandler}
+                onChange={inputFileHandler}
                 name="image"
                 id="image"
                 type="file"

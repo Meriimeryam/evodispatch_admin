@@ -7,6 +7,8 @@ import RequestController from "./Pages/RequestController";
 import Solution from "./Pages/Solution";
 import SolutionsController from "./Pages/SolutionsController";
 import Links from "./Pages/Links";
+import ClientsController from "./Pages/ClientsController";
+import Clients from "./Pages/Client";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path="/request" component={RequestController} />
         <Route path="/view-request" component={Requests} />
         <Route path="/links" component={Links} />
+        <Route path="/clients" component={ClientsController} />
+        <Route path="/add-client" component={Clients} />
       </Switch>
     </Router>
   );

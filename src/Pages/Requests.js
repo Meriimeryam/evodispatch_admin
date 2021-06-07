@@ -29,7 +29,7 @@ function Request({ location }) {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params.get("id");
-    Axios.get("http://localhost:5000/request", {
+    Axios.get("/request", {
       params: {
         id: id,
       },
@@ -43,7 +43,7 @@ function Request({ location }) {
   }, []);
 
   const deleteItem = () => {
-    Axios.delete("http://localhost:5000/request", {
+    Axios.delete("/request", {
       data: {
         source: deletedRequest.id_request,
       },
