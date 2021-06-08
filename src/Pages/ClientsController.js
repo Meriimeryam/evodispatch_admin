@@ -61,7 +61,7 @@ function LogosController() {
       <Modal isOpen={modalIsOpen} style={customStyles}>
         <h2>Delete Confirmation</h2>
 
-        <Paragraphe>Are you sure you want to delete this Request?</Paragraphe>
+        <Paragraphe>Are you sure you want to delete this Client?</Paragraphe>
         <ButtonsWrapper>
           <PrimaryButton
             onClick={() => {
