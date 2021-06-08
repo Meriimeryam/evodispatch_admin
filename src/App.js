@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Navbar from "./Components/Nav/Navbar";
-import Home from "./Pages";
 import Requests from "./Pages/Requests";
 import RequestController from "./Pages/RequestController";
 import Solution from "./Pages/Solution";
@@ -15,11 +14,10 @@ function App() {
     <Router>
       <Navbar />
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact component={RequestController} />
+        <Route path="/view-request" component={Requests} />
         <Route path="/solutions" component={SolutionsController} />
         <Route path="/add-solutions" component={Solution} />
-        <Route path="/request" component={RequestController} />
-        <Route path="/view-request" component={Requests} />
         <Route path="/links" component={Links} />
         <Route path="/clients" component={ClientsController} />
         <Route path="/add-client" component={Clients} />

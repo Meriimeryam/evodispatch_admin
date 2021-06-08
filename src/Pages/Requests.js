@@ -49,7 +49,7 @@ function Request({ location }) {
       },
     })
       .then((res) => {
-        history.push("/request");
+        history.push("/");
       })
       .catch((err) => {
         console.log(err);
